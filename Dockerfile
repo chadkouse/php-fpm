@@ -13,6 +13,7 @@ RUN yum update -y && yum install -y \
     php56-devel \
     php56-pdo \
     php56-mysqlnd \
+    php56-mbstring \
     libbz2-dev \
     libc-client-dev \
     libcurl4-gnutls-dev \
