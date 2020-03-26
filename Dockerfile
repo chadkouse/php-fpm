@@ -1,10 +1,18 @@
-FROM php:5.6.32-fpm
+FROM amazonlinux:2018.03
 
-LABEL maintainer="Vincent Letourneau <vincent@nanoninja.com>"
+LABEL maintainer="Chad Kouse <chad.kouse@gmail.com>"
 
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y \
-    g++ \
+RUN yum update -y && yum install -y \
+    gcc \
+    php56-fpm \
+    php56-gmp \
+    php56-gd \
+    php56-imap \
+    php56-intl \
+    php56-ldap \
+    php56-devel \
+    php56-pdo \
+    php56-mysqlnd \
     libbz2-dev \
     libc-client-dev \
     libcurl4-gnutls-dev \
@@ -28,18 +36,6 @@ RUN apt-get update && apt-get upgrade -y \
     wget \
     unzip \
     zlib1g-dev \
-    && docker-php-ext-configure gd \
-    --with-freetype-dir=/usr/include/ \
-    --with-jpeg-dir=/usr/include/ \
-    --with-png-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install -j$(nproc) imap \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install -j$(nproc) intl \
-    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
-    && docker-php-ext-install ldap \
-    && docker-php-ext-install -j$(nproc) \
     bcmath \
     bz2 \
     calendar \
@@ -58,12 +54,10 @@ RUN apt-get update && apt-get upgrade -y \
     xmlrpc \
     xsl \
     zip \
-    && pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug \
-    && pecl install memcached-2.2.0 && docker-php-ext-enable memcached \
-    && pecl install ssh2 && docker-php-ext-enable ssh2 \
-    && yes '' | pecl install imagick && docker-php-ext-enable imagick \
-    && docker-php-source delete \
-    && apt-get remove -y g++ wget \
-    && apt-get autoremove --purge -y && apt-get autoclean -y && apt-get clean -y \
+    && yum install -y php-pear \
+    php56-pecl-xdebug \
+    php56-pecl-memcached \
+    php56-pecl-ssh2 \
+    php56-pecl-imagick \
+    && echo "NETWORKING=yes" > /etc/sysconfig/network \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/*
