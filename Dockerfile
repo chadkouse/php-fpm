@@ -56,6 +56,7 @@ RUN yum update -y && yum install -y \
     xmlrpc \
     xsl \
     zip \
+    git \
     && yum install -y php-pear \
     php56-pecl-xdebug \
     php56-pecl-memcached \
